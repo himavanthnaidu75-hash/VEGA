@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Outfit, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" });
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono" });
+const uiFont = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-ui" });
+const dataFont = Space_Mono({ weight: ["400", "700"], subsets: ["latin"], variable: "--font-data" });
 
 export const metadata: Metadata = {
-  title: "VEGA PRO | Autonomous Trading",
-  description: "Advanced Institutional Trading Automaton",
+  title: "VEGA PRO | Institutional Suite",
+  description: "Advanced Volatility Engineering Platform",
 };
 
 export default function RootLayout({
@@ -18,7 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased bg-bg-pure text-text-primary`}>
+      <body className={`${uiFont.variable} ${dataFont.variable} antialiased bg-bg-pure text-platinum`}>
+        <div className="aurora-bg" />
         {children}
       </body>
     </html>

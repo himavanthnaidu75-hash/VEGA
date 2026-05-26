@@ -1,59 +1,63 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Wifi, Clock, ShieldCheck } from "lucide-react";
+import { Wifi, Clock, Anchor } from "lucide-react";
 
 const stocks = [
-  { symbol: "RELIANCE", price: "2,945.60", change: "+1.2%" },
-  { symbol: "TCS", price: "4,120.30", change: "-0.4%" },
-  { symbol: "INFY", price: "1,680.15", change: "+0.8%" },
-  { symbol: "HDFC BANK", price: "1,450.90", change: "-1.1%" },
-  { symbol: "NIFTY 50", price: "22,456.70", change: "+0.3%" },
+  { s: "NIFTY 50", p: "22,456.70", c: "+0.3%" },
+  { s: "BANK NIFTY", p: "47,890.00", c: "-0.1%" },
+  { s: "RELIANCE", p: "2,945.60", c: "+1.2%" },
+  { s: "TCS", p: "4,120.30", c: "-0.4%" },
+  { s: "HDFC BANK", p: "1,450.90", c: "+0.2%" },
 ];
 
 export default function TopBar() {
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(new Date().toLocaleTimeString([], { hour12: false }));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="fixed top-0 left-0 right-0 h-16 border-b border-border-subtle bg-black/80 backdrop-blur-md z-50 flex items-center px-8">
-      {/* Logo */}
-      <div className="flex-shrink-0">
-        <h1 className="text-xl font-bold tracking-[0.2em] text-white flex items-center gap-2">
-          VEGA <span className="text-purple-royal">PRO</span>
+    <div className="fixed top-0 left-0 right-0 h-14 border-b border-border-lux bg-black/40 backdrop-blur-2xl z-50 flex items-center px-10">
+      {/* Wordmark */}
+      <div className="flex-shrink-0 flex items-center gap-3">
+        <h1 className="text-lg font-bold tracking-[0.3em] text-platinum">
+          VEGA <span className="text-gold">PRO</span>
         </h1>
-        <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-purple-royal/50 to-transparent blur-[2px]" />
+        <div className="h-4 w-[1px] bg-border-lux" />
+        <span className="text-[8px] text-text-secondary uppercase tracking-[0.5em] font-bold">Swiss Engine v3.0</span>
       </div>
 
       {/* Ticker */}
-      <div className="flex-1 overflow-hidden mx-12">
-        <div className="flex animate-marquee whitespace-nowrap gap-12">
+      <div className="flex-1 overflow-hidden mx-16">
+        <div className="flex animate-marquee whitespace-nowrap gap-16">
           {[...stocks, ...stocks].map((s, i) => (
-            <div key={i} className="flex items-center gap-2 font-data text-xs">
-              <span className="text-text-secondary">{s.symbol}</span>
-              <span className="text-white font-bold">{s.price}</span>
-              <span className={s.change.startsWith("+") ? "text-profit" : "text-loss"}>
-                {s.change}
-              </span>
+            <div key={i} className="flex items-center gap-3 font-data text-[10px]">
+              <span className="text-text-secondary">{s.s}</span>
+              <span className="text-platinum font-bold">{s.p}</span>
+              <span className={s.c.startsWith("+") ? "text-profit" : "text-loss"}>{s.c}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Right Section */}
-      <div className="flex items-center gap-6">
-        <div className="flex items-center gap-2 text-[10px] text-teal-blue uppercase tracking-widest font-bold">
-          <Wifi size={12} />
-          <span>98ms Link</span>
-        </div>
-        <div className="flex items-center gap-2 text-[10px] text-text-secondary uppercase tracking-widest font-bold">
-          <ShieldCheck size={12} />
-          <span className="bg-purple-royal/20 text-purple-royal px-2 py-0.5 rounded border border-purple-royal/30">Nominal</span>
-        </div>
-        <div className="flex items-center gap-2 text-xs font-data text-text-secondary">
-          <Clock size={12} />
-          <span>{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
-        </div>
+      {/* Status Indicators */}
+      <div className="flex items-center gap-8">
         <div className="flex items-center gap-2">
-           <div className="w-2 h-2 rounded-full bg-purple-royal animate-pulse shadow-[0_0_8px_#6600CC]" />
-           <span className="text-[10px] font-bold tracking-tighter text-purple-royal uppercase">Live</span>
+          <div className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shadow-[0_0_10px_#D4AF37]" />
+          <span className="text-[9px] font-bold text-gold uppercase tracking-widest">Live Terminal</span>
+        </div>
+        <div className="flex items-center gap-3 text-text-secondary">
+          <Wifi size={12} className="text-gold opacity-50" />
+          <span className="font-data text-[10px] tracking-tighter">98MS</span>
+        </div>
+        <div className="flex items-center gap-3 text-text-secondary border-l border-border-lux pl-6">
+          <Clock size={12} className="text-gold opacity-50" />
+          <span className="font-data text-[10px] tracking-tighter">{time}</span>
         </div>
       </div>
 
@@ -63,7 +67,7 @@ export default function TopBar() {
           100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-          animation: marquee 30s linear infinite;
+          animation: marquee 40s linear infinite;
         }
       `}</style>
     </div>

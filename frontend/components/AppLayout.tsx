@@ -2,35 +2,33 @@
 import React from "react";
 import TopBar from "./TopBar";
 import Onboarding from "./Onboarding";
-import LuxCanvas from "./LuxCanvas";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 const navItems = [
-  { name: "Trade Terminal", path: "/" },
-  { name: "Overview", path: "/overview" },
-  { name: "Positions", path: "/positions" },
-  { name: "Journal", path: "/journal" },
-  { name: "Logs", path: "/logs" },
-  { name: "Config", path: "/config" },
+  { name: "Terminal", path: "/" },
+  { name: "Portfolio", path: "/overview" },
+  { name: "Vault", path: "/positions" },
+  { name: "Ledger", path: "/journal" },
+  { name: "System", path: "/logs" },
+  { name: "Control", path: "/config" },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen relative">
-      <LuxCanvas />
-      <Onboarding />
+    <div className="min-h-screen relative text-platinum">
       <TopBar />
+      <Onboarding />
 
-      {/* Sub Nav */}
-      <div className="fixed top-16 left-0 right-0 h-12 bg-black/40 border-b border-border-subtle/50 z-40 flex items-center justify-center gap-8">
+      {/* Navigation Layer */}
+      <div className="fixed top-14 left-0 right-0 h-10 bg-black/20 border-b border-border-lux/30 z-40 flex items-center justify-center gap-10 backdrop-blur-md">
         {navItems.map((item) => (
           <Link key={item.path} href={item.path}>
-            <span className={`text-[10px] uppercase tracking-[0.2em] font-bold cursor-pointer transition-all hover:text-purple-royal ${
-              pathname === item.path ? "text-purple-royal border-b border-purple-royal" : "text-text-secondary"
+            <span className={`text-[9px] uppercase tracking-[0.4em] font-bold cursor-pointer transition-all hover:text-gold ${
+              pathname === item.path ? "text-gold border-b border-gold" : "text-text-secondary"
             }`}>
               {item.name}
             </span>
@@ -38,14 +36,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         ))}
       </div>
 
-      <main className="pt-32 pb-12 px-8">
+      <main className="pt-32 pb-16 px-12">
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, filter: "blur(10px)", scale: 0.98 }}
+            animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+            exit={{ opacity: 0, filter: "blur(10px)", scale: 0.98 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             {children}
           </motion.div>
