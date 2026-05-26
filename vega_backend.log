@@ -1,4 +1,8 @@
-Traceback (most recent call last):
-  File "/app/backend/main.py", line 3, in <module>
-    from backend.app.api.router import router
-ModuleNotFoundError: No module named 'backend'
+INFO:     Started server process [408764]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [408764]

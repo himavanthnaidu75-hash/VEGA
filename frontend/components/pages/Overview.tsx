@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, ShieldCheck, Globe, Activity } from "lucide-react";
 
@@ -11,6 +11,16 @@ const mainStats = [
 ];
 
 export default function Overview() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-bg-pure" />;
+  }
+
   return (
     <div className="space-y-16">
       {/* Prime Indicators */}

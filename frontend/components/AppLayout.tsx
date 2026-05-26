@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TopBar from "./TopBar";
 import Onboarding from "./Onboarding";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,6 +17,15 @@ const navItems = [
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-bg-pure" />;
+  }
 
   return (
     <div className="min-h-screen relative text-platinum">

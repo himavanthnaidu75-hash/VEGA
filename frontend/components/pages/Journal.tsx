@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Book, ChevronRight, FileText } from "lucide-react";
 
@@ -10,6 +10,16 @@ const history = [
 ];
 
 export default function Journal() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-bg-pure" />;
+  }
+
   return (
     <div className="space-y-12">
       <header className="flex justify-between items-end">

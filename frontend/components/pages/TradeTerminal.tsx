@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Zap, ShieldCheck, Target, TrendingUp } from "lucide-react";
 
@@ -49,6 +49,16 @@ const newsFeed = [
 ];
 
 export default function TradeTerminal() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-bg-pure" />;
+  }
+
   return (
     <div className="grid grid-cols-12 gap-12">
       {/* Left Scanner */}

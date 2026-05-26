@@ -13,13 +13,19 @@ const stocks = [
 
 export default function TopBar() {
   const [time, setTime] = useState("");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const timer = setInterval(() => {
       setTime(new Date().toLocaleTimeString([], { hour12: false }));
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  if (!mounted) {
+    return <div className="fixed top-0 left-0 right-0 h-14 border-b border-border-lux bg-black/40 backdrop-blur-2xl z-50" />;
+  }
 
   return (
     <div className="fixed top-0 left-0 right-0 h-14 border-b border-border-lux bg-black/40 backdrop-blur-2xl z-50 flex items-center px-10">
@@ -51,7 +57,7 @@ export default function TopBar() {
           <div className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shadow-[0_0_10px_#D4AF37]" />
           <span className="text-[9px] font-bold text-gold uppercase tracking-widest">Live Terminal</span>
         </div>
-        <div className="flex items-center gap-3 text-text-secondary">
+        <div className="flex items-center gap-2 text-text-secondary">
           <Wifi size={12} className="text-gold opacity-50" />
           <span className="font-data text-[10px] tracking-tighter">98MS</span>
         </div>
