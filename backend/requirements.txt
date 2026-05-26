@@ -1,0 +1,15 @@
+fastapi==0.109.2
+uvicorn==0.27.1
+yfinance
+pandas
+numpy
+pandas-ta
+sqlalchemy==2.0.27
+pydantic==2.6.1
+python-telegram-bot==20.8
+apscheduler==3.10.4
+requests==2.31.0
+beautifulsoup4==4.12.3
+vaderSentiment==3.3.2
+PyPDF2==3.0.1
+python-dotenv==1.0.1
