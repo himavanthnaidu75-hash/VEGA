@@ -1,9 +1,13 @@
-from sqlalchemy import create_all, create_engine
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
 
-DATABASE_URL = "sqlite:///./backend/data/vega.db"
+DB_DIR = "./backend/data"
+if not os.path.exists(DB_DIR):
+    os.makedirs(DB_DIR)
+
+DATABASE_URL = f"sqlite:///{DB_DIR}/vega.db"
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.app.api.router import router
+from app.api.router import router
 import uvicorn
 
 app = FastAPI(title="VEGA API")

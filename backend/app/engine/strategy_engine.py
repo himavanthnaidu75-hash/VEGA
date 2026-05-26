@@ -1,5 +1,6 @@
 import pandas as pd
-import pandas_ta as ta
+from ta.trend import EMAIndicator
+from ta.momentum import RSIIndicator
 from .ict_engine import ICTEngine
 
 class StrategyEngine:
@@ -26,7 +27,8 @@ class StrategyEngine:
         in_htf_fvg = False
         for fvg in htf_fvgs:
             if fvg['bottom'] <= last_price <= fvg['top']:
-                if (sweep_info['type'] == 'BULLISH' and fvg['type'] == 'BULLISH') or                    (sweep_info['type'] == 'BEARISH' and fvg['type'] == 'BEARISH'):
+                if (sweep_info['type'] == 'BULLISH' and fvg['type'] == 'BULLISH') or \
+                   (sweep_info['type'] == 'BEARISH' and fvg['type'] == 'BEARISH'):
                     in_htf_fvg = True
                     break
 
@@ -39,13 +41,13 @@ class StrategyEngine:
             return signals
 
         # 2. Indicator Confirmation (Secondary Filters)
-        ltf_df.ta.ema(length=9, append=True)
-        ltf_df.ta.ema(length=21, append=True)
-        ltf_df.ta.rsi(length=14, append=True)
+        ema9_ind = EMAIndicator(close=ltf_df['Close'], window=9)
+        ema21_ind = EMAIndicator(close=ltf_df['Close'], window=21)
+        rsi_ind = RSIIndicator(close=ltf_df['Close'], window=14)
 
-        ema_9 = ltf_df['EMA_9'].iloc[-1]
-        ema_21 = ltf_df['EMA_21'].iloc[-1]
-        rsi = ltf_df['RSI_14'].iloc[-1]
+        ema_9 = ema9_ind.ema_indicator().iloc[-1]
+        ema_21 = ema21_ind.ema_indicator().iloc[-1]
+        rsi = rsi_ind.rsi().iloc[-1]
 
         indicator_pass = False
         if sweep_info['type'] == 'BULLISH':
