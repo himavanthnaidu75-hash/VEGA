@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 
-export default function LuxCanvas() {
+export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -10,8 +10,8 @@ export default function LuxCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animationFrameId: number;
     let particles: Particle[] = [];
+    let animationFrameId: number;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -23,29 +23,29 @@ export default function LuxCanvas() {
       y: number;
       vx: number;
       vy: number;
-      size: number;
+      color: string;
 
-      constructor(w: number, h: number) {
-        this.x = Math.random() * w;
-        this.y = Math.random() * h;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.size = Math.random() * 1.5 + 0.5;
+      constructor() {
+        this.x = Math.random() * canvas!.width;
+        this.y = Math.random() * canvas!.height;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
+        this.color = Math.random() > 0.5 ? "rgba(212, 175, 55, 0.4)" : "rgba(232, 232, 232, 0.2)";
       }
 
-      update(w: number, h: number) {
+      update() {
         this.x += this.vx;
         this.y += this.vy;
 
-        if (this.x < 0 || this.x > w) this.vx *= -1;
-        if (this.y < 0 || this.y > h) this.vy *= -1;
+        if (this.x < 0 || this.x > canvas!.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas!.height) this.vy *= -1;
       }
 
-      draw(c: CanvasRenderingContext2D) {
-        c.beginPath();
-        c.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        c.fillStyle = "rgba(102, 0, 204, 0.3)";
-        c.fill();
+      draw() {
+        ctx!.beginPath();
+        ctx!.arc(this.x, this.y, 1, 0, Math.PI * 2);
+        ctx!.fillStyle = this.color;
+        ctx!.fill();
       }
     }
 
@@ -53,17 +53,16 @@ export default function LuxCanvas() {
       resize();
       particles = [];
       for (let i = 0; i < 80; i++) {
-        particles.push(new Particle(canvas.width, canvas.height));
+        particles.push(new Particle());
       }
     };
 
     const animate = () => {
-      if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach((p, i) => {
-        p.update(canvas.width, canvas.height);
-        p.draw(ctx);
+        p.update();
+        p.draw();
 
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
@@ -71,11 +70,11 @@ export default function LuxCanvas() {
           const dy = p.y - p2.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 150) {
+          if (dist < 120) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(102, 0, 204, ${0.1 * (1 - dist / 150)})`;
+            ctx.strokeStyle = `rgba(212, 175, 55, ${0.15 * (1 - dist / 120)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -96,9 +95,10 @@ export default function LuxCanvas() {
   }, []);
 
   return (
-    <div className="fixed inset-0 -z-10 bg-bg-pure">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(102,0,204,0.05),transparent_70%)]" />
-      <canvas ref={canvasRef} className="opacity-60" />
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none"
+      style={{ zIndex: 0 }}
+    />
   );
 }

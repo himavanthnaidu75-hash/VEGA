@@ -33,7 +33,7 @@ export default function Onboarding() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center p-8 bg-black/95 backdrop-blur-xl"
+        className="fixed inset-0 z-[100] flex items-center justify-center p-8 bg-bg-pure/95 backdrop-blur-xl"
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(212,175,55,0.05),transparent_70%)]" />
 
