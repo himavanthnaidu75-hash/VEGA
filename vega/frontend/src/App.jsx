@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Login from "./pages/Login";
 import Terminal from './pages/Terminal';
 import Scanner from './pages/Scanner';
 import Analytics from './pages/Analytics';
@@ -42,6 +43,7 @@ function App() {
         {/* Main Content */}
         <main className="mt-28 p-8 flex-1 z-10">
           <Routes>
+            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Terminal />} />
             <Route path="/scanner" element={<Scanner />} />
             <Route path="/analytics" element={<Analytics />} />

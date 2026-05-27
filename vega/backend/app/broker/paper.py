@@ -62,6 +62,7 @@ class PaperBroker(BrokerInterface):
                 self.margins.available_margin -= exec_price * qty
         return OrderResult(order_id=order_id, status="FILLED")
     def cancel_order(self, order_id: str) -> bool: return True
+    def cancel_all_orders(self) -> bool: return True
     def modify_order(self, order_id: str, price: float, qty: int) -> bool: return False
     def get_live_price(self, symbol: str) -> float:
         yf_symbol = f"{symbol}.NS" if not symbol.endswith((".NS", ".BO")) else symbol

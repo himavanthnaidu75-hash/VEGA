@@ -33,6 +33,8 @@ class BrokerInterface(ABC):
     @abstractmethod
     def cancel_order(self, order_id: str) -> bool: pass
     @abstractmethod
+    def cancel_all_orders(self) -> bool: pass
+    @abstractmethod
     def modify_order(self, order_id: str, price: float, qty: int) -> bool: pass
     @abstractmethod
     def get_live_price(self, symbol: str) -> float: pass

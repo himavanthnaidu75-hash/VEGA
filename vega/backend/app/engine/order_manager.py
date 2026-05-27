@@ -1,7 +1,7 @@
 import asyncio
 from typing import List, Dict
 from loguru import logger
-from ..adapters.base import BrokerInterface, OrderResult
+from ..broker.base import BrokerInterface, OrderResult
 from ..models.trade import Trade
 from ..core.database import engine
 from sqlmodel import Session, select
