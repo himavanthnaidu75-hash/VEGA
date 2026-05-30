@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from jose import jwt
-from vega.backend.config import settings
+from backend.config import settings
 def create_access_token(data: dict):
     to_encode = data.copy()
     to_encode.update({"exp": datetime.utcnow() + timedelta(hours=24)})
