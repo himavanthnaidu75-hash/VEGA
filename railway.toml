@@ -1,6 +1,7 @@
 [build]
 builder = "nixpacks"
+buildCommand = "pip install -r requirements.txt && pip install -e ."
 
 [deploy]
-startCommand = "uvicorn backend.main:app --host 0.0.0.0 --port 8000"
+startCommand = "uvicorn vega.backend.main:app --host 0.0.0.0 --port 8000"
 restartPolicyType = "on_failure"
