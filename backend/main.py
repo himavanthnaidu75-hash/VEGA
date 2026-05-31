@@ -84,6 +84,10 @@ async def manual_kill(
         return {"status": "purged"}
     raise HTTPException(status_code=401)
 
+@app.get("/api/health")
+def health():
+    return {"status": "ok"}
+
 @app.get("/api/ohlcv")
 def get_ohlcv(symbol: str, interval: str = "5m"):
     df = fetcher.get_ohlcv(symbol, interval)
@@ -164,3 +168,4 @@ def get_stats_endpoint():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=settings.PORT)
+
