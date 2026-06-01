@@ -100,7 +100,7 @@ def run_diagnostics():
         checks.append({"name": "Broker Connection", "status": "fail", "detail": str(e)})
     # DB check
     try:
-        with Session(engine) as s:
+        with Session(db_engine) as s:
             s.exec(select(Trade).limit(1))
         checks.append({"name": "Database", "status": "pass", "detail": settings.DB_PATH})
     except Exception as e:
@@ -114,16 +114,17 @@ def get_ohlcv(symbol: str, interval: str = "5m"):
     df = fetcher.get_ohlcv(symbol, interval)
     if df.empty: return []
     res = []
+    import calendar
+    seen = set()
     for idx, row in df.iterrows():
-        res.append({
-            "time": int(idx.timestamp()),
-            "open": float(row["Open"]),
-            "high": float(row["High"]),
-            "low": float(row["Low"]),
-            "close": float(row["Close"]),
-            "volume": float(row["Volume"])
-        })
-    return res
+        try:
+            ts = int(calendar.timegm(idx.utctimetuple())) if (hasattr(idx, 'tzinfo') and idx.tzinfo) else int(idx.timestamp())
+            if ts in seen: continue
+            seen.add(ts)
+            res.append({"time": ts, "open": round(float(row["Open"]),2), "high": round(float(row["High"]),2), "low": round(float(row["Low"]),2), "close": round(float(row["Close"]),2), "volume": float(row["Volume"])})
+        except Exception:
+            continue
+    return sorted(res, key=lambda x: x["time"])
 
 @app.get("/api/signals")
 def get_signals():
