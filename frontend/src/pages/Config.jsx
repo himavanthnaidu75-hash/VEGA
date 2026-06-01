@@ -177,7 +177,7 @@ const Config = () => {
                     {showBrokerCreds ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                <p className="text-[9px] text-text-dim italic">Found in Dhan Profile > API Access</p>
+                <p className="text-[9px] text-text-dim italic">Found in Dhan Profile &gt; API Access</p>
               </div>
               <div className="space-y-4">
                 <label className="text-[10px] font-black text-text-faint uppercase tracking-widest block ml-1">Access Token</label>
