@@ -86,5 +86,26 @@ class VegaScheduler:
         ks = KillSwitch(broker=self.o.broker, ws_manager=self.o.ws_manager)
         await ks.execute(reason="End of Session Purge")
 
-    async def eod_report(self): logger.info("Generating EOD report...")
+    async def eod_report(self):
+        from backend.models import Trade
+        from sqlmodel import Session, select, func
+        from backend.database import engine
+        try:
+            with Session(engine) as s:
+                trades = s.exec(select(Trade)).all()
+                wins = [t for t in trades if t.pnl and t.pnl > 0]
+                total_pnl = sum(t.pnl for t in trades if t.pnl)
+                win_rate = (len(wins) / len(trades) * 100) if trades else 0
+            msg = (
+                f"📊 VEGA 2.0 EOD Report\n"
+                f"{'─'*28}\n"
+                f"Total Trades: {len(trades)}\n"
+                f"Win Rate: {win_rate:.1f}%\n"
+                f"Net P&L: ₹{total_pnl:,.2f}\n"
+                f"Mode: {settings.TRADING_MODE}"
+            )
+            await notifier.send(msg)
+            logger.info(f"EOD report sent. Trades: {len(trades)}, PnL: {total_pnl:.2f}")
+        except Exception as e:
+            logger.error(f"EOD report failed: {e}")
     async def standby(self): logger.info("System entering standby.")

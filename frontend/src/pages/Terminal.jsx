@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 import useVegaStore from '../store/useVegaStore';
 import SignalCard from '../components/SignalCard';
 import PositionRow from '../components/PositionRow';
-import TradingViewChart from '../components/TradingViewChart';
+import VegaChart from '../components/VegaChart';
 
 const formatTVSymbol = (symbol) => {
   const nseStocks = ['RELIANCE','TCS','INFY','HDFCBANK','ICICIBANK','SBIN','BHARTIARTL','ITC','ASIANPAINT','TITAN','KOTAKBANK','AXISBANK','HINDUNILVR','BAJFINANCE','LT','MARUTI','HCLTECH','SUNPHARMA'];
@@ -48,7 +48,7 @@ const Terminal = () => {
             </div>
           </div>
           <div className="flex-1 w-full">
-            <TradingViewChart symbol={chartSymbol} />
+            <VegaChart />
           </div>
         </div>
 

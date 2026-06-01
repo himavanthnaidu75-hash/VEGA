@@ -15,7 +15,7 @@ const Scanner = () => {
   useEffect(() => {
     const fetchSignals = async () => {
       try {
-        const { data } = await api.get('/signals');
+        const { data } = await api.get('/api/signals');
         setSignals(data);
       } catch (e) {
         console.error('Failed to fetch signals', e);

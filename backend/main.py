@@ -86,7 +86,28 @@ async def manual_kill(
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok"}
+    return {"status": "ok", "version": "2.0"}
+
+@app.get("/api/diagnostics")
+def run_diagnostics():
+    import time
+    checks = []
+    # Broker check
+    try:
+        broker.connect()
+        checks.append({"name": "Broker Connection", "status": "pass", "detail": settings.BROKER})
+    except Exception as e:
+        checks.append({"name": "Broker Connection", "status": "fail", "detail": str(e)})
+    # DB check
+    try:
+        with Session(engine) as s:
+            s.exec(select(Trade).limit(1))
+        checks.append({"name": "Database", "status": "pass", "detail": settings.DB_PATH})
+    except Exception as e:
+        checks.append({"name": "Database", "status": "fail", "detail": str(e)})
+    # Scheduler check
+    checks.append({"name": "Scheduler", "status": "pass" if scheduler.sched.running else "fail", "detail": "APScheduler"})
+    return {"timestamp": time.time(), "checks": checks}
 
 @app.get("/api/ohlcv")
 def get_ohlcv(symbol: str, interval: str = "5m"):
@@ -168,4 +189,3 @@ def get_stats_endpoint():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=settings.PORT)
-

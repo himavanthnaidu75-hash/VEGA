@@ -39,8 +39,13 @@ const useWebSocket = () => {
         case 'new_signal': 
           addSignal(message.data); 
           break;
-        case 'ticker_update': 
-          updateTickers(message.data); 
+        case 'ticker_update':
+          // Backend sends {symbol, price} — normalize to {[symbol]: price}
+          if (message.data.symbol) {
+            updateTickers({ [message.data.symbol]: message.data.price });
+          } else {
+            updateTickers(message.data);
+          }
           break;
         case 'kill_event':
         case 'kill_switch':

@@ -113,7 +113,7 @@ const Config = () => {
 
   const testBroker = async () => {
     try {
-       const { data } = await api.get('/diagnostics/run');
+       const { data } = await api.get('/api/diagnostics');
        alert('Connection Status: ' + (data.status === 'PASS' ? 'Connected' : 'Failed'));
     } catch (e) {
        alert('Connection Failed: Backend Unreachable');
@@ -177,7 +177,7 @@ const Config = () => {
                     {showBrokerCreds ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                <p className="text-[9px] text-text-dim italic">Found in Dhan Profile &gt; API Access</p>
+                <p className="text-[9px] text-text-dim italic">Found in Dhan Profile > API Access</p>
               </div>
               <div className="space-y-4">
                 <label className="text-[10px] font-black text-text-faint uppercase tracking-widest block ml-1">Access Token</label>

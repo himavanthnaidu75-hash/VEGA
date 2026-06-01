@@ -43,8 +43,22 @@ class DhanBroker(BrokerInterface):
     def cancel_order(self, oid): return self.dhan.cancel_order(oid).get('status') == 'success'
     def modify_order(self, oid, p, q): return self.dhan.modify_order(oid, "LIMIT", q, p).get('status') == 'success'
     def get_live_price(self, s):
-        import yfinance as yf
-        return yf.Ticker(f"{s}.NS").fast_info['lastPrice']
+        try:
+            sid = get_security_id(s)
+            r = self.dhan.intraday_minute_data(sid, "NSE_EQ", "1")
+            if r.get('status') == 'success' and r.get('data'):
+                return float(r['data'][-1]['close'])
+        except Exception:
+            pass
+        # Fallback: use last price from positions if available
+        try:
+            positions = self.get_positions()
+            for p in positions:
+                if p.symbol == s:
+                    return p.last_price
+        except Exception:
+            pass
+        return 0.0
     def get_ohlcv(self, s, i, f="", t=""):
         from backend.data.fetcher import fetcher
         return fetcher.get_ohlcv(s, i)
